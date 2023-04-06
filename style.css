@@ -12,7 +12,7 @@ html, body {
   }
 
   #score-container {
-    background-color: aquamarine;
+    background-color: rgb(173, 188, 183);
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -34,20 +34,21 @@ html, body {
     display: block;
     grid-column: 1/2;
     grid-row: 2/3;
+    background-color: #767676;
   }
 
   #kinect-window {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: aqua;
+    background-color: rgb(145, 145, 145);
     grid-column: 2/3;
     grid-row: 2/3;
   }
 
   .hands {
     height: 100px;
-    background-color: #b8937a;
+    background-color: hsl(0, 0%, 0%);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -59,7 +60,7 @@ html, body {
     height: 50px;
     width: 50px;
     color: white;
-    background-color: #fcc006;
+    background-color: #ffffff;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -71,7 +72,7 @@ html, body {
     height: 0;
     border-top: 15px solid transparent;
     border-bottom: 15px solid transparent;
-    border-right: 15px solid #ca0147;
+    border-right: 15px solid #000000;
     margin: 2rem;
     margin-right: 35px;
   }
@@ -81,7 +82,7 @@ html, body {
     height: 0;
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
-    border-bottom: 15px solid #ca0147;
+    border-bottom: 15px solid #000000;
     margin: 2rem;
     margin-bottom: 35px;
   }
@@ -91,7 +92,7 @@ html, body {
     height: 0;
     border-top: 15px solid transparent;
     border-bottom: 15px solid transparent;
-    border-left: 15px solid #ca0147;
+    border-left: 15px solid #000000;
     margin: 2rem;
     margin-left: 35px;
   }
@@ -101,23 +102,23 @@ html, body {
     height: 0;
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
-    border-top: 15px solid #ca0147;
+    border-top: 15px solid #000000;
     margin: 2rem;
     margin-top: 35px;
   }
 
   .active-left {
-    border-right: 15px solid #c1f80a;
+    border-right: 15px solid #000000;
   }
 
   .active-up {
-    border-bottom: 15px solid #c1f80a;
+    border-bottom: 15px solid #000000;
   }
 
   .active-right {
-    border-left: 15px solid #c1f80a;
+    border-left: 15px solid #000000;
   }
 
   .active-down {
-    border-top: 15px solid #c1f80a;
+    border-top: 15px solid #000000;
   }
