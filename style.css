@@ -107,17 +107,17 @@ html, body {
   }
 
   .active-left {
-    border-right: 15px solid #c1f80a;
+    border-right: 15px solid #000000;
   }
 
   .active-up {
-    border-bottom: 15px solid #c1f80a;
+    border-bottom: 15px solid #000000;
   }
 
   .active-right {
-    border-left: 15px solid #c1f80a;
+    border-left: 15px solid #000000;
   }
 
   .active-down {
-    border-top: 15px solid #c1f80a;
+    border-top: 15px solid #000000;
   }
