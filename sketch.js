@@ -33,27 +33,49 @@ var frames = {
 		var left_elbow_y = (frame.people[0].joints[6].position.y - pelvis_y) * -1;
 		var chest_y = frame.people[0].joints[2].position.y;
 		var left_wrist_y = (frame.people[0].joints[7].position.y - pelvis_y) * -1;
-		var nose_y = (frame.people[0].joints[27].position.y - pelvis_y) * -1;
-		var left_elbow_y = (frame.people[0].joints[13].position.y - pelvis_y) * -1;
-		var left_wrist_y = (frame.people[0].joints[14].position.y - pelvis_y) * -1;
+		var nose_y = frame.people[0].joints[27].position.y * -1;
+		var right_elbow_y = (frame.people[0].joints[13].position.y - pelvis_y) * -1;
+		var right_wrist_y = (frame.people[0].joints[14].position.y - pelvis_y) * -1;
 
-		console.log(left_elbow_y, chest_y);
+		console.log(left_elbow_y, nose_y);
+		console.log(left_wrist_y, nose_y);
+
+		var timer_run = false;
+		var timer;
+
 		if (
-			left_elbow_y > chest_y &&
+			left_elbow_y > nose_y &&
 			left_wrist_y > nose_y &&
-			right_elbow_y > chest_y &&
+			right_elbow_y > nose_y &&
 			right_wrist_y > nose_y
 		) {
-			var count = 5;
-			var timer = setInterval(function () {
-				count--;
-				if (count === 0) {
-					clearInterval(timer);
-				}
-				document.getElementById('timer').innerHTML = count;
-			}, 1000);
+			if (!timer_run) {
+				var count = 3;
+				timer_run = true;
+				timer = setInterval(function () {
+					count--;
+					if (count === 0) {
+						console.log('DONE');
+						clearInterval(timer);
+						timer = 0; // stop the interval m
+						timer_run = false;
+					} else if (count < 0) {
+						console.log('Counter should not go below 0');
+						clearInterval(timer); // stop the interval
+						timer_run = false;
+					} else {
+						document.getElementById('timer').innerHTML = count;
+						console.log('TIMER IS MOVING!');
+					}
+				}, 1000);
+				console.log('TIMER IS STARTED!');
+			} else {
+				console.log('TIMER IS ALREADY RUNNING!');
+			}
 		} else {
-			console.log('in the else !');
+			console.log('HANDS ARE NOT RAISED!');
+			clearInterval(timer); // stop the interval
+			timer_run = false;
 		}
 	},
 	get_left_wrist_command: function (frame) {
