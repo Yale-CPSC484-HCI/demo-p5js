@@ -62,7 +62,7 @@ var frames = {
 						timer_run = false;
 						window.location.href = 'page2.html'; // redirect to page2.html
 						setTimeout(function () {
-							window.location.href = 'different_page.html'; // redirect to different_page.html after 3 seconds
+							window.location.href = 'page3.html'; // redirect to different_page.html after 3 seconds
 						}, 3000);
 					} else if (count < 0) {
 						console.log('Counter should not go below 0');
