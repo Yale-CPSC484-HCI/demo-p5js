@@ -37,28 +37,33 @@ var frames = {
 		var right_elbow_y = (frame.people[0].joints[13].position.y - pelvis_y) * -1;
 		var right_wrist_y = (frame.people[0].joints[14].position.y - pelvis_y) * -1;
 
-		console.log(left_elbow_y, nose_y);
-		console.log(left_wrist_y, nose_y);
-
 		var timer_run = false;
 		var timer;
 
+		// we check if the user has both of his hands in the air!
 		if (
 			left_elbow_y > nose_y &&
 			left_wrist_y > nose_y &&
 			right_elbow_y > nose_y &&
 			right_wrist_y > nose_y
 		) {
+			// we will start the timer, first time the user put it's both hands in the air
 			if (!timer_run) {
 				var count = 3;
 				timer_run = true;
 				timer = setInterval(function () {
 					count--;
+
+					// When the timer is equal to 0 we will redirect to a tutorial page
 					if (count === 0) {
 						console.log('DONE');
 						clearInterval(timer);
-						timer = 0; // stop the interval m
+						timer = 0; // stop the interval
 						timer_run = false;
+						window.location.href = 'page2.html'; // redirect to page2.html
+						setTimeout(function () {
+							window.location.href = 'different_page.html'; // redirect to different_page.html after 3 seconds
+						}, 3000);
 					} else if (count < 0) {
 						console.log('Counter should not go below 0');
 						clearInterval(timer); // stop the interval
@@ -78,6 +83,7 @@ var frames = {
 			timer_run = false;
 		}
 	},
+
 	get_left_wrist_command: function (frame) {
 		var command = null;
 		if (frame.people.length < 1) {
