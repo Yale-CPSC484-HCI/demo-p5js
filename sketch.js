@@ -1,6 +1,9 @@
 // Adapted from https://p5js.org/examples/interaction-snake-game.html
 //
 var host = 'cpsc484-01.yale.internal:8888';
+var positions = [];
+var started = false;
+
 $(document).ready(function () {
 	frames.start();
 	twod.start();
@@ -10,130 +13,90 @@ var frames = {
 	socket: null,
 
 	start: function () {
+		console.log("start");
 		var url = 'ws://' + host + '/frames';
 		frames.socket = new WebSocket(url);
 		frames.socket.onmessage = function (event) {
-			var command = frames.timer_function(JSON.parse(event.data));
-			if (command !== null) {
-				sendWristCommand(command);
-			}
+			var command = frames.get_left_wrist_command(JSON.parse(event.data));
+			// if (command !== null) {
+			// 	sendWristCommand(command);
+			// }
 		};
 	},
 
-	timer_function: function (frame) {
+	timer_function: function () {
 		var command = null;
 		// no people break
-		if (frame.people.length < 1) {
-			return command;
-		}
+		// console.log(frame.people.length);
+		// if (frame.people.length < 1) {
+		// 	// console.log("here");
+		// 	return command;
+		// }
 
 		// Normalize by subtracting the root (pelvis) joint coordinates
-		var pelvis_y = frame.people[0].joints[2].position.y;
-
-		var left_elbow_y = (frame.people[0].joints[6].position.y - pelvis_y) * -1;
-		var chest_y = frame.people[0].joints[2].position.y;
-		var left_wrist_y = (frame.people[0].joints[7].position.y - pelvis_y) * -1;
-		var nose_y = frame.people[0].joints[27].position.y * -1;
-		var right_elbow_y = (frame.people[0].joints[13].position.y - pelvis_y) * -1;
-		var right_wrist_y = (frame.people[0].joints[14].position.y - pelvis_y) * -1;
 
 		var timer_run = false;
 		var timer;
-
+		// console.log("here");
+		
 		// we check if the user has both of his hands in the air!
-		if (
-			left_elbow_y > nose_y &&
-			left_wrist_y > nose_y &&
-			right_elbow_y > nose_y &&
-			right_wrist_y > nose_y
-		) {
 			// we will start the timer, first time the user put it's both hands in the air
-			if (!timer_run) {
-				var count = 3;
-				timer_run = true;
-				timer = setInterval(function () {
-					count--;
+	if (!timer_run) {
+		var count = 3;
+		timer_run = true;
+		timer = setInterval(function () {
+			count--;
 
-					// When the timer is equal to 0 we will redirect to a tutorial page
-					if (count === 0) {
-						console.log('DONE');
-						clearInterval(timer);
-						timer = 0; // stop the interval
-						timer_run = false;
-						window.location.href = 'page2.html'; // redirect to page2.html
-						setTimeout(function () {
-							window.location.href = 'page3.html'; // redirect to different_page.html after 3 seconds
-						}, 3000);
-					} else if (count < 0) {
-						console.log('Counter should not go below 0');
-						clearInterval(timer); // stop the interval
-						timer_run = false;
-					} else {
-						document.getElementById('timer').innerHTML = count;
-						console.log('TIMER IS MOVING!');
-					}
-				}, 1000);
-				console.log('TIMER IS STARTED!');
+			// When the timer is equal to 0 we will redirect to a tutorial page
+			if (count === 0) {
+				console.log('DONE');
+				clearInterval(timer);
+				timer = 0; // stop the interval
+				timer_run = false;
+				window.location.href = 'page2.html'; // redirect to page2.html
+				setTimeout(function () {
+					window.location.href = 'page3.html'; // redirect to different_page.html after 3 seconds
+				}, 3000);
+				
+			} else if (count < 0) {
+				console.log('Counter should not go below 0');
+				clearInterval(timer); // stop the interval
+				timer_run = false;
 			} else {
-				console.log('TIMER IS ALREADY RUNNING!');
+				document.getElementById('timer').innerHTML = count;
+				// console.log('TIMER IS MOVING!');
 			}
-		} else {
-			console.log('HANDS ARE NOT RAISED!');
-			clearInterval(timer); // stop the interval
-			timer_run = false;
-		}
+		}, 1000);
+		// console.log('TIMER IS STARTED!');
+	} else {
+		console.log('TIMER IS ALREADY RUNNING!');
+	}
+
 	},
 
 	get_left_wrist_command: function (frame) {
-		var command = null;
 		if (frame.people.length < 1) {
-			return command;
-
-			// Both hands of user are above head-
-			// if this is the case- start trigger timmer to go down 5 to 0
-			// else, rest the timer
+			return null;
 		}
+		positions = frame.people[0];
 
-		// Normalize by subtracting the root (pelvis) joint coordinates
-		var chest_x = frame.people[0].joints[2].position.x;
-		var chest_y = frame.people[0].joints[2].position.y;
-		var chest_z = frame.people[0].joints[2].position.z;
-		var nose_x = (frame.people[0].joints[27].position.x - pelvis_x) * -1;
-		var nose_y = (frame.people[0].joints[27].position.y - pelvis_y) * -1;
-		var nose_z = (frame.people[0].joints[27].position.z - pelvis_z) * -1;
-		var left_elbow_x = (frame.people[0].joints[6].position.x - pelvis_x) * -1;
-		var left_elbow_y = (frame.people[0].joints[6].position.y - pelvis_y) * -1;
-		var left_elbow_z = (frame.people[0].joints[6].position.z - pelvis_z) * -1;
-		var left_wrist_x = (frame.people[0].joints[7].position.x - pelvis_x) * -1;
-		var left_wrist_y = (frame.people[0].joints[7].position.y - pelvis_y) * -1;
-		var left_wrist_z = (frame.people[0].joints[7].position.z - pelvis_z) * -1;
+		var pelvis_y = positions.joints[2].position.y;
 
-		if (left_wrist_z < 100) {
-			return command;
-		}
+		var left_elbow_y = positions.joints[6].position.y ;
+		var chest_y = positions.joints[2].position.y;
+		var left_wrist_y = positions.joints[7].position.y;
+		var nose_y = positions.joints[27].position.y;
+		var right_elbow_y = positions.joints[13].position.y;
+		var right_wrist_y = positions.joints[14].position.y;
 
-		if (
-			left_elbow_y > chest_y &&
-			left_wrist_y > nose_y &&
-			left_wrist_x > left_elbow_x
-		) {
-			console.log('yeeeahaa');
-		}
-
-		if (left_wrist_x < 200 && left_wrist_x > -200) {
-			if (left_wrist_y > 500) {
-				command = 73; // UP
-			} else if (left_wrist_y < 100) {
-				command = 75; // DOWN
+		if (left_elbow_y < nose_y &&
+			left_wrist_y < nose_y &&
+			right_elbow_y < nose_y &&
+			right_wrist_y < nose_y &&
+			started == false) {
+				started = true;
+				this.timer_function();
 			}
-		} else if (left_wrist_y < 500 && left_wrist_y > 100) {
-			if (left_wrist_x > 200) {
-				command = 76; // RIGHT
-			} else if (left_wrist_x < -200) {
-				command = 74; // LEFT
-			}
-		}
-		return command;
 	},
 };
 
